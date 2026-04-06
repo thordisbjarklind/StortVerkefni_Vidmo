@@ -26,7 +26,7 @@ public class LudoApplication extends javafx.application.Application {
         // Smíða senuna með notendaviðmótinu sem er núna lesið inn af resources
         Scene scene = new Scene(fxmlLoader.load(), 800, 800);
         // Setja titilinn á gluggann
-        stage.setTitle("Halló heimur");
+        stage.setTitle("LUDO");
         // Tengja senuna við glugggann
         stage.setScene(scene);
         // Birta gluggann

@@ -1,15 +1,16 @@
 .reitur {
     -fx-pref-width: 60px;
     -fx-pref-height: 60px;
-    -fx-background-color: white;
+    -fx-background-color: blue;
     -fx-border-color: black;
     -fx-border-width: 1px 0 0 1px;
 }
 
 .ped {
-    -fx-radius: 20;
-    -fx-stroke: black;
-    -fx-stroke-type: inside;
 }
-.blar { -fx-fill: blue; }
-.gulur { -fx-fill: yellow; }
+
+
+.gulur  { -fx-background-image: url("myndir/ektaGulur.jpg"); }
+.raudur { -fx-background-image: url("myndir/ektaRaudur.jpg"); }
+.graenn { -fx-background-image: url("myndir/darkGreen.jpg"); }
+.blar { -fx-background-image: url("myndir/ektaBlar.jpg"); }
