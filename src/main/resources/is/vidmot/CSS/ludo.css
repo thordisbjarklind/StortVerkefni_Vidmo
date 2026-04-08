@@ -10,7 +10,7 @@
 }
 
 
-.gulur  { -fx-background-image: url("myndir/ektaGulur.jpg"); }
-.raudur { -fx-background-image: url("myndir/ektaRaudur.jpg"); }
-.graenn { -fx-background-image: url("myndir/darkGreen.jpg"); }
-.blar { -fx-background-image: url("myndir/ektaBlar.jpg"); }
+.gulur  { -fx-background-image: url("myndir/realYellow.png"); }
+.raudur { -fx-background-image: url("myndir/realRed.png"); }
+.graenn { -fx-background-image: url("myndir/realGreen.png"); }
+.blar { -fx-background-image: url("myndir/realBlue.png"); }
