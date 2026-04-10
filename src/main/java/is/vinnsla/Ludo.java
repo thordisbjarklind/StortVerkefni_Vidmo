@@ -1,122 +1,206 @@
 package is.vinnsla;
 
-import java.util.ArrayList;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import java.util.ArrayList;
 
-/******************************************************************************
- *  Nafn    : Ebba Þóra Hvannberg
- *  T-póstur: ebba@hi.is
- *  Lýsing  : Gerir ekki neitt í þessu forriti. Síðar hafa vinnsluklasar það hlutverk að framkvæma
- *  bakendavinnslu óháð notendaviðmóti *
- *
- *****************************************************************************/
 public class Ludo {
-    private Leikmadur[] leikmenn = new Leikmadur[2];
-    private ArrayList<Reitur> leidin = new ArrayList<>();
-    private Teningur teningur = new Teningur();
-    private int gerir = 0;
-    private SimpleObjectProperty<Leikmadur> naestiLeikmadur = new SimpleObjectProperty<>();
 
-    public Teningur getTeningur() {
-        return teningur;
-    }
-
-    public enum leikStada {
+    public enum LeikStada {
         I_GANGI, LOKID
     }
 
+    private Leikmadur[] leikmenn = new Leikmadur[4];
+    private Teningur teningur = new Teningur();
+    private int gerir = 0;
+    private SimpleObjectProperty<LeikStada> stada = new SimpleObjectProperty<>(LeikStada.I_GANGI);
+    private SimpleObjectProperty<Leikmadur> naestiLeikmadur = new SimpleObjectProperty<>();
+    private boolean bidurEftirPedVali = false;
+
+    private ArrayList<Reitur>[] leidir = new ArrayList[4];
+
+    public Ludo(Leikmadur[] leikmenn) {
+        this.leikmenn = leikmenn;
+        smidaLeidir();
+        gerir = finnaVirkanLeikmann(0);
+        naestiLeikmadur.set(leikmenn[gerir]);
+    }
+
+    private void smidaLeidir() {
+        int[][] gulur = {
+                {1,3},{2,3},{3,3},{3,2},{3,1},{3,0},{4,0},{5,0},
+                {5,1},{5,2},{5,3},{6,3},{7,3},{8,3},{8,4},{8,5},
+                {7,5},{6,5},{5,5},{5,6},{5,7},{5,8},{4,8},{3,8},
+                {3,7},{3,6},{3,5},{2,5},{1,5},{0,5},{0,4},
+                {1,4},{2,4},{3,4},
+                {4,4}
+        };
+
+        int[][] raudur = {
+                {3,7},{3,6},{3,5},{2,5},{1,5},{0,5},{0,4},{0,3},
+                {1,3},{2,3},{3,3},{3,2},{3,1},{3,0},{4,0},{5,0},
+                {5,1},{5,2},{5,3},{6,3},{7,3},{8,3},{8,4},{8,5},
+                {7,5},{6,5},{5,5},{5,6},{5,7},{5,8},{4,8},
+                {4,7},{4,6},{4,5},
+                {4,4}
+        };
+
+        int[][] graenn = {
+                {7,5},{6,5},{5,5},{5,6},{5,7},{5,8},{4,8},{3,8},
+                {3,7},{3,6},{3,5},{2,5},{1,5},{0,5},{0,4},{0,3},
+                {1,3},{2,3},{3,3},{3,2},{3,1},{3,0},{4,0},{5,0},
+                {5,1},{5,2},{5,3},{6,3},{7,3},{8,3},{8,4},
+                {7,4},{6,4},{5,4},
+                {4,4}
+        };
+
+        int[][] blar = {
+                {5,1},{5,2},{5,3},{6,3},{7,3},{8,3},{8,4},{8,5},
+                {7,5},{6,5},{5,5},{5,6},{5,7},{5,8},{4,8},{3,8},
+                {3,7},{3,6},{3,5},{2,5},{1,5},{0,5},{0,4},{0,3},
+                {1,3},{2,3},{3,3},{3,2},{3,1},{3,0},{4,0},
+                {4,1},{4,2},{4,3},
+                {4,4}
+        };
+
+        // smá ruglandi en þetta er einfaldasta leiðin til að gera þetta held ég. að nota 3D lista fyrir for lykkjuna.
+        int[][][] allarLeidir = {gulur, raudur, graenn, blar};
+        Reitur.Litur[] litir = {
+                Reitur.Litur.GULUR,
+                Reitur.Litur.RAUDUR,
+                Reitur.Litur.GRAENN,
+                Reitur.Litur.BLAR
+        };
+
+        for (int i = 0; i < 4; i++) {
+            leidir[i] = new ArrayList<>();
+            int[][] path = allarLeidir[i];
+            for (int j = 0; j < path.length; j++) {
+                Reitur.ReiturTypa typa;
+                if (j == 0) typa = Reitur.ReiturTypa.START;
+                else if (j >= 31 && j <= 33) typa = Reitur.ReiturTypa.HOME_STRETCH;
+                else if (j == 34) typa = Reitur.ReiturTypa.GOAL;
+                else typa = Reitur.ReiturTypa.NORMAL;
+
+                Reitur.Litur litur = (j >= 31) ? litir[i] : null;
+
+                leidir[i].add(new Reitur(path[j][1], path[j][0], typa, litur));
+            }
+        }
+    }
+
     /**
-     * kastar tening, færir leikmann, setur næsta leikmann
-     *
-     * @return skilar true ef leik er lokið
+     * Kallað þegar smellt er á tening
+     * Kastar tening og biður eftir að það sé smellt á peð
      */
-    public boolean leikaLeik() {
-        // kasta tening
+    public void kastaTeningi() {
         teningur.kasta();
+        bidurEftirPedVali = true;
+    }
+
+    /**
+     * Kallað þegar smellt er á peð.
+     * Færir peð og athugar á árekstrum eða hvort peð sé komið í mark, skilar þá true.
+     */
+    public boolean faeraPed(int pedNumer) {
         int kast = teningur.getTala();
-        // færa leikmann samkvæmt tening, leikmaður komst í mark er leik lokið og skilað true
         Leikmadur nuverandi = leikmenn[gerir];
-        nuverandi.faera(kast, 10);
 
-        // kanna stöðu á opponent
-        int o = (gerir == 0) ? 1 : 0;
-        Leikmadur opponent = leikmenn[o];
+        // færir peð, skilar true ef það fer í mark
+        boolean skorad = nuverandi.faera(pedNumer, kast);
 
-        // Kanna hvort þeir séu á sama reit
-        if (nuverandi.getReitur() == opponent.getReitur() &&
-                nuverandi.getReitur() > 0 &&
-                nuverandi.getReitur() < 10) {
-
-            // senda heim!!
-            opponent.reiturProperty().set(0);
-            System.out.println(opponent.getNafn() + " var sendur heim!");
+        if (!skorad) {
+            int pedStada = (pedNumer == 1) ? nuverandi.getPed1Stada() : nuverandi.getPed2Stada();
+            if (pedStada <= 30) {
+                athugaKnocking(gerir, pedStada);
+            }
         }
 
-        //kanna sigrara
-        if (nuverandi.getReitur() >= 10) {
-            //enda leik
-            setStada(leikStada.LOKID);
+        if (nuverandi.hefurSigrad()) {
+            stada.set(LeikStada.LOKID);
+            bidurEftirPedVali = false;
             return true;
         }
 
-        // næsti leikmaður gerir
-        gerir = (gerir == 0) ? 1 : 0;
-        naestiLeikmadur.set(leikmenn[gerir]);
+        // Ef kastið er 6, gera aftur
+        if (kast == 6) {
+            bidurEftirPedVali = false;
+        } else {
+            // annars, næsti spilari
+            gerir = finnaVirkanLeikmann((gerir + 1) % 4);
+            naestiLeikmadur.set(leikmenn[gerir]);
+            bidurEftirPedVali = false;
+        }
 
         return false;
     }
 
-    public ArrayList<Reitur> getLeidin() {
-        return leidin;
-    }
+    /**
+     * Athugar hvort annað peð er á sama reit. Ef svo, senda heim.
+     */
+    private void athugaKnocking(int leikmannIndex, int pedStada) {
+        Reitur targetReitur = leidir[leikmannIndex].get(pedStada);
 
-    public Ludo(int m) {
-        leikmenn[0] = new Leikmadur("blar");
-        leikmenn[1] = new Leikmadur("gulur");
+        for (int i = 0; i < 4; i++) {
+            if (i == leikmannIndex) continue;
+            if (!leikmenn[i].isVirkur()) continue;
 
-        int size = 6; // 6x6 borð
+            int p1Stada = leikmenn[i].getPed1Stada();
+            if (leikmenn[i].isPed1Leyst() && p1Stada <= 30) {
+                Reitur opponentReitur = leidir[i].get(p1Stada);
+                if (opponentReitur.getRow() == targetReitur.getRow() &&
+                        opponentReitur.getColumn() == targetReitur.getColumn()) {
+                    leikmenn[i].sendaHeim(1);
+                    System.out.println(leikmenn[i] + " ped 1 sent home!");
+                }
+            }
 
-        for (int i = size - 1; i >= 0; i--) {
-            Reitur.ReiturTypa typa = (i == size - 1) ? Reitur.ReiturTypa.START : Reitur.ReiturTypa.NORMAL;
-            leidin.add(new Reitur(i, 0, typa)); // Row i, Column 0
+            int p2Stada = leikmenn[i].getPed2Stada();
+            if (leikmenn[i].isPed2Leyst() && p2Stada <= 30) {
+                Reitur opponentReitur = leidir[i].get(p2Stada);
+                if (opponentReitur.getRow() == targetReitur.getRow() &&
+                        opponentReitur.getColumn() == targetReitur.getColumn()) {
+                    leikmenn[i].sendaHeim(2);
+                    System.out.println(leikmenn[i] + " ped 2 sent home!");
+                }
+            }
         }
+    }
 
-        for (int j = 1; j < size; j++) {
-            Reitur.ReiturTypa typa = (j == size - 1) ? Reitur.ReiturTypa.FINISH : Reitur.ReiturTypa.NORMAL;
-            leidin.add(new Reitur(0, j, typa)); // Row 0, Column j
+    private int finnaVirkanLeikmann(int fromIndex) {
+        for (int i = 0; i < 4; i++) {
+            int idx = (fromIndex + i) % 4;
+            if (leikmenn[idx].isVirkur()) return idx;
         }
-
-        naestiLeikmadur.set(leikmenn[gerir]);
+        return 0;
     }
 
-    public Leikmadur getLeikmadur(int id) {
-        return leikmenn[id];
+    public boolean isPedClickable(int pedNumer) {
+        if (!bidurEftirPedVali) return false;
+        return leikmenn[gerir].isPedClickable(pedNumer, teningur.getTala());
     }
 
-    public void skipta() {
-        naestiLeikmadur.set(leikmenn[gerir == 0 ? 1 : 0]);
+    public boolean isBidurEftirPedVali() { return bidurEftirPedVali; }
+    public Reitur getReiturFyrirPed(int leikmannIndex, int pedStada) {
+        return leidir[leikmannIndex].get(pedStada);
     }
-
-    private final SimpleObjectProperty<leikStada> stadaProperty =
-            new SimpleObjectProperty<>(leikStada.I_GANGI);
-
-    public SimpleObjectProperty<leikStada> stadaProperty() {
-        return stadaProperty;
-    }
-
-    public void setStada(leikStada nyrStada) {
-        this.stadaProperty.set(nyrStada);
-    }
+    public Teningur getTeningur() { return teningur; }
+    public Leikmadur getLeikmadur(int id) { return leikmenn[id]; }
+    public SimpleObjectProperty<LeikStada> stadaProperty() { return stada; }
+    public SimpleObjectProperty<Leikmadur> naestiLeikmadurProperty() { return naestiLeikmadur; }
+    public ArrayList<Reitur> getLeid(int i) { return leidir[i]; }
 
     public void nyrLeikur() {
-        leikmenn[0].reiturProperty().set(0);
-        leikmenn[1].reiturProperty().set(0);
-        gerir = 0;
-        setStada(leikStada.I_GANGI);
-    }
-
-    public SimpleObjectProperty<Leikmadur> naestiLeikmadurProperty() {
-        return naestiLeikmadur;
+        for (Leikmadur l : leikmenn) {
+            if (l.isVirkur()) {
+                l.ped1StadaProperty().set(0);
+                l.ped2StadaProperty().set(0);
+                l.ped1LeystProperty().set(false);
+                l.ped2LeystProperty().set(false);
+            }
+        }
+        gerir = finnaVirkanLeikmann(0);
+        naestiLeikmadur.set(leikmenn[gerir]);
+        stada.set(LeikStada.I_GANGI);
+        bidurEftirPedVali = false;
     }
 }

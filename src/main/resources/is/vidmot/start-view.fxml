@@ -16,8 +16,7 @@ Notendaviðmót fyrir Halló heimur forritið
 Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
 -->
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1411.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1411.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="is.vidmot.StartController">
    <children>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="736.0">
          <columnConstraints>
@@ -44,35 +43,34 @@ Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="42.0" prefWidth="151.0" text="Í leik" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <Button fx:id="fxGulurTakki" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onGulurTakki" prefHeight="42.0" prefWidth="151.0" text="Í leik" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="143.0" text="Í leik" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <Button fx:id="fxRaudurTakki" mnemonicParsing="false" onAction="#onRaudurTakki" prefHeight="44.0" prefWidth="143.0" text="Í leik" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="4">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="144.0" text="Í leik" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
+            <Button fx:id="fxBlarTakki" mnemonicParsing="false" onAction="#onBlarTakki" prefHeight="40.0" prefWidth="144.0" text="Í leik" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="151.0" text="Í leik" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="10">
+            <Button fx:id="fxGraennTakki" mnemonicParsing="false" onAction="#onGraennTakki" prefHeight="42.0" prefWidth="151.0" text="Í leik" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="10">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" />
-            <ChoiceBox prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="11" />
-            <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-            <ChoiceBox prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-            <ImageView fitHeight="125.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" />
-            <ImageView fitHeight="164.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ImageView fitHeight="160.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <ImageView fitHeight="140.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <ImageView fitHeight="134.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+            <ChoiceBox fx:id="fxBlarLitur" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" />
+            <ChoiceBox fx:id="fxGraennLitur" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="11" />
+            <ChoiceBox fx:id="fxGulurLitur" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="fxRaudurLitur" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+            <ImageView fx:id="fxGulurDyr" fitHeight="164.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ImageView fx:id="fxRaudurDyr" fitHeight="160.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <ImageView fx:id="fxBlarDyr" fitHeight="140.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <ImageView fx:id="fxGraennDyr" fitHeight="134.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="8" />
          </children>
       </GridPane>
       <GridPane prefHeight="960.0" prefWidth="674.0">
@@ -113,7 +111,7 @@ Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
                   <Font size="24.0" />
                </font>
             </Label>
-            <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="58.0" prefWidth="153.0" text="Hefja leik!" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button fx:id="fxHefjaLeik" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHefjaLeik" prefHeight="58.0" prefWidth="153.0" text="Hefja leik!" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
                   <Font size="24.0" />
                </font>
