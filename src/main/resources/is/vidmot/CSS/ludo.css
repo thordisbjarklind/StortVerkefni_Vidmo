@@ -14,3 +14,23 @@
 .raudur { -fx-background-image: url("myndir/realRed.png"); }
 .graenn { -fx-background-image: url("myndir/realGreen.png"); }
 .blar { -fx-background-image: url("myndir/realBlue.png"); }
+
+.realYellow { -fx-background-color: #FFD700; }
+.pastelYellow { -fx-background-color: #FFF0A0; }
+.realOrange { -fx-background-color: #FF8C00; }
+.pastelOrange { -fx-background-color: #FFD5A0; }
+
+.realRed { -fx-background-color: #CC0000; }
+.pastelRed { -fx-background-color: #FF8080; }
+.realPink { -fx-background-color: #FF69B4; }
+.pastelPink { -fx-background-color: #FFB6C1; }
+
+.realBlue { -fx-background-color: #0000CC; }
+.pastelBlue { -fx-background-color: #A0C4FF; }
+.realPurple { -fx-background-color: #6600CC; }
+.lilac { -fx-background-color: #C8A2C8; }
+
+.realGreen { -fx-background-color: #008000; }
+.pastelGreen { -fx-background-color: #B0EEB0; }
+.neonGreen { -fx-background-color: #39FF14; }
+.seaGreen { -fx-background-color: #2E8B57; }
