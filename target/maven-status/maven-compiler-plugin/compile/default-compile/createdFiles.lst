@@ -1,9 +1,13 @@
 is/vinnsla/Leikmadur.class
 is/vinnsla/Reitur.class
+is/vinnsla/Ludo$LeikStada.class
+is/vinnsla/Reitur$Litur.class
 is/vidmot/LudoApplication.class
+is/vinnsla/LeikStilling.class
 module-info.class
+is/vinnsla/Leikmadur$Dyr.class
+is/vidmot/StartController.class
 is/vinnsla/Reitur$ReiturTypa.class
 is/vinnsla/Teningur.class
 is/vinnsla/Ludo.class
 is/vidmot/LudoController.class
-is/vinnsla/Ludo$leikStada.class
