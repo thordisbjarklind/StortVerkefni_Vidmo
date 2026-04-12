@@ -6,9 +6,6 @@
     -fx-border-width: 1px 0 0 1px;
 }
 
-.ped {
-}
-
 
 .gulur  { -fx-background-image: url("myndir/realYellow.png"); }
 .raudur { -fx-background-image: url("myndir/realRed.png"); }
@@ -34,3 +31,18 @@
 .pastelGreen { -fx-background-color: #B0EEB0; }
 .neonGreen { -fx-background-color: #39FF14; }
 .seaGreen { -fx-background-color: #2E8B57; }
+
+.einn  { -fx-background-image: url("myndir/dOne.png"); }
+.tveir { -fx-background-image: url("myndir/dTwo.png"); }
+.thrir { -fx-background-image: url("myndir/dThree.png"); }
+.fjorir{ -fx-background-image: url("myndir/dFour.jpg"); }
+.fimm  { -fx-background-image: url("myndir/dFive.png"); }
+.sex   { -fx-background-image: url("myndir/dSix.png"); }
+
+.hnappur {
+    -fx-background-size: contain;
+        -fx-background-repeat: no-repeat;
+        -fx-background-position: center;
+        -fx-background-color: transparent;
+        -fx-padding: 0 0 0 50;
+}
