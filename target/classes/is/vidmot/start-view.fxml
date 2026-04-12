@@ -9,6 +9,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <!--
@@ -16,7 +18,7 @@ Notendaviðmót fyrir Halló heimur forritið
 Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
 -->
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1411.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="is.vidmot.StartController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1400.0" stylesheets="@CSS/ludo.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="is.vidmot.StartController">
    <children>
       <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="818.0" prefWidth="736.0">
          <columnConstraints>
@@ -67,10 +69,30 @@ Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
             <ChoiceBox fx:id="fxGraennLitur" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="11" />
             <ChoiceBox fx:id="fxGulurLitur" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
             <ChoiceBox fx:id="fxRaudurLitur" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-            <ImageView fx:id="fxGulurDyr" fitHeight="164.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ImageView fx:id="fxRaudurDyr" fitHeight="160.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <ImageView fx:id="fxBlarDyr" fitHeight="140.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <ImageView fx:id="fxGraennDyr" fitHeight="134.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+            <StackPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Circle fx:id="fxGulurCircle" fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="realYellow" />
+                  <ImageView fx:id="fxGulurDyr" fitHeight="164.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
+            <StackPane GridPane.columnIndex="4" GridPane.rowIndex="2">
+               <children>
+                  <Circle fx:id="fxRaudurCircle" fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="realRaudur" />
+                  <ImageView fx:id="fxRaudurDyr" fitHeight="160.0" fitWidth="221.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
+            <StackPane GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <children>
+                  <Circle fx:id="fxBlarCircle" fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="realBlar" />
+                  <ImageView fx:id="fxBlarDyr" fitHeight="140.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
+            <StackPane GridPane.columnIndex="4" GridPane.rowIndex="8">
+               <children>
+                  <Circle fx:id="fxGraennCircle" fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" styleClass="realGraenn" />
+                  <ImageView fx:id="fxGraennDyr" fitHeight="134.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </StackPane>
          </children>
       </GridPane>
       <GridPane prefHeight="960.0" prefWidth="674.0">
@@ -91,22 +113,22 @@ Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
                   <Font size="36.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="1. Hægt að velja 2-4 leikmenn og valið hvaða dýr þú vilt vera." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="1. Veljið 2-4 leikmenn og hvaða dýr þið viljið vera." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="2. Þið veljið fjölda og hvaða dýr verða í leik með að ýta á hnappinn undir dýrunum." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2">
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="2. Ýtið á hnappinn undir dýrinu til að taka það úr leik." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="3. Ef þið viljið velja lit fyrir hvern leikmann flettið þið á milli litana sem er í boði undir þeim (ef ekki eru klassísku litirnir birtir)." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="3. Veljið lit fyrir hvern leikmann úr listanum." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="4. Þegar allir eru sáttir með leikmenn sýna er ýtt á hnappinn &quot;Hefja leik!&quot;" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="160.0" prefWidth="620.0" text="4. Ýtið á &quot;Hefja leik!&quot; þegar þið eruð tilbúin." textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4">
                <font>
                   <Font size="24.0" />
                </font>
