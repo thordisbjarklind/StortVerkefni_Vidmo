@@ -3,6 +3,7 @@ package is.vinnsla;
 import javafx.beans.property.SimpleObjectProperty;
 import java.util.ArrayList;
 
+
 public class Ludo {
 
     public enum LeikStada {
