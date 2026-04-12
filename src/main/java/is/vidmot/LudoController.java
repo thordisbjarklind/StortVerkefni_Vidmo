@@ -38,13 +38,11 @@ public class LudoController {
     @FXML
     private Label fxSkilabod;
 
-
     private Ludo ludo;
-
 
     private final Map<Reitur, StackPane> vidmotLeid = new HashMap<>();
 
-    String[] teningaMyndir = {"einn", "tveir", "thrir", "fjorir", "fimm", "sex"};
+    private final String[] teningaMyndir = {"einn", "tveir", "thrir", "fjorir", "fimm", "sex"};
 
     @FXML
     public void initialize() {
@@ -55,43 +53,43 @@ public class LudoController {
                 new Leikmadur(Reitur.Litur.BLAR, Leikmadur.Dyr.HESTUR, true)
         });
 
+        tengjaTening();
 
+        System.out.println("Leikur byrjaður!!");
+    }
+
+    private void tengjaTening() {
         uppfaeraTeningamynd(ludo.getTeningur().getTala());
 
         ludo.getTeningur().talaProperty().addListener((obs, oldV, newV) -> {
             uppfaeraTeningamynd(newV.intValue());
         });
-
-        fxKasta.getStyleClass().add(teningaMyndir[ludo.getTeningur().getTala() - 1]);
-
-        ludo.getTeningur().talaProperty().addListener((obs, oldV, newV) -> {
-            if (oldV != null && oldV.intValue() >= 1) {
-                fxKasta.getStyleClass().remove(teningaMyndir[oldV.intValue() - 1]);
-            }
-            fxKasta.getStyleClass().add(teningaMyndir[newV.intValue() - 1]);
-        });
-
-        System.out.println("Leikur byrjaður!!");
     }
 
     private void uppfaeraTeningamynd(int tala) {
         fxKasta.getStyleClass().removeAll("einn", "tveir", "thrir", "fjorir", "fimm", "sex");
         fxKasta.getStyleClass().add(teningaMyndir[tala - 1]);
+
+        System.out.println("Teningur sýnir: " + tala);
+        System.out.println(fxKasta.getStyleClass());
     }
 
 
     @FXML
     protected void onLeikaLeik() {
+        System.out.println("Smellt á kasta");
         ludo.kastaTeningi();
     }
 
     @FXML
     protected void onNyrLeikur(ActionEvent event) {
         ludo.nyrLeikur();
+        uppfaeraTeningamynd(ludo.getTeningur().getTala());
     }
 
     public void setStilling(LeikStilling stilling) {
         ludo = new Ludo(stilling.getLeikmenn());
+        tengjaTening();
     }
 }
 
