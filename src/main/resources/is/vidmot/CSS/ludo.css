@@ -1,11 +1,9 @@
 .reitur {
     -fx-pref-width: 60px;
     -fx-pref-height: 60px;
-    -fx-background-color: blue;
     -fx-border-color: black;
     -fx-border-width: 1px 0 0 1px;
 }
-
 
 .gulur  { -fx-background-image: url("myndir/realYellow.png"); }
 .raudur { -fx-background-image: url("myndir/realRed.png"); }
@@ -45,4 +43,29 @@
         -fx-background-position: center;
         -fx-background-color: transparent;
         -fx-padding: 0 0 0 50;
+}
+
+.fillYellow      { -fx-fill: #FFD700; }
+.fillPastelYellow{ -fx-fill: #FFF0A0; }
+.fillOrange      { -fx-fill: #FF8C00; }
+.fillPastelOrange{ -fx-fill: #FFD5A0; }
+
+.fillRed         { -fx-fill: #CC0000; }
+.fillPastelRed   { -fx-fill: #FF8080; }
+.fillPink        { -fx-fill: #FF69B4; }
+.fillPastelPink  { -fx-fill: #FFB6C1; }
+
+.fillBlue        { -fx-fill: #0000CC; }
+.fillPastelBlue  { -fx-fill: #A0C4FF; }
+.fillPurple      { -fx-fill: #6600CC; }
+.fillLilac       { -fx-fill: #C8A2C8; }
+
+.fillGreen       { -fx-fill: #008000; }
+.fillSeaGreen    { -fx-fill: #2E8B57; }
+.fillPastelGreen { -fx-fill: #B0EEB0; }
+.fillNeonGreen   { -fx-fill: #39FF14; }
+
+.goal {
+    -fx-background-color: white;
+    -fx-border-color: black;
 }

@@ -8,11 +8,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class StartController {
+
+    @FXML private Circle fxGulurCircle;
+    @FXML private Circle fxRaudurCircle;
+    @FXML private Circle fxBlarCircle;
+    @FXML private Circle fxGraennCircle;
 
     @FXML private Button fxGulurTakki;
     @FXML private Button fxRaudurTakki;
@@ -31,90 +37,91 @@ public class StartController {
 
     @FXML private Button fxHefjaLeik;
 
-    // Virkir notendur
-    private boolean[] virkir = {true, true, true, true};
+    private final boolean[] virkir = {true, true, true, true};
+
+    private static final String[][] FILL_KLASAR = {
+            {"fillYellow", "fillPastelYellow", "fillOrange", "fillPastelOrange"},
+            {"fillRed", "fillPink", "fillPastelRed", "fillPastelPink"},
+            {"fillGreen", "fillSeaGreen", "fillPastelGreen", "fillNeonGreen"},
+            {"fillBlue", "fillPurple", "fillPastelBlue", "fillLilac"}
+    };
 
     @FXML
     public void initialize() {
-        // litavalkostir
-        fxGulurLitur.getItems().addAll("Gulur", "Pastel gulur", "Appelsínugulur", "Pastel appelsínugulur");
-        fxRaudurLitur.getItems().addAll("Rauður", "Bleikur", "Pastel rauður", "Pastel bleikur");
-        fxBlarLitur.getItems().addAll("Blár", "Fjólublár", "Pastel Blár", "Lilac");
-        fxGraennLitur.getItems().addAll("Graenn", "Sjó grænn", "Pastel grænn", "Neon grænn");
+        fxGulurLitur.getItems().addAll("Gulur", "Pastell gulur", "Appelsínugulur", "Pastell appelsínugulur");
+        fxRaudurLitur.getItems().addAll("Rauður", "Bleikur", "Pastell rauður", "Pastell bleikur");
+        fxBlarLitur.getItems().addAll("Blár", "Fjólublár", "Pastell blár", "Lilac");
+        fxGraennLitur.getItems().addAll("Grænn", "Sægrænn", "Pastell grænn", "Neon grænn");
 
-        // default litir
         fxGulurLitur.getSelectionModel().selectFirst();
         fxRaudurLitur.getSelectionModel().selectFirst();
         fxBlarLitur.getSelectionModel().selectFirst();
         fxGraennLitur.getSelectionModel().selectFirst();
 
-        // Tengja myndir
-        fxGulurDyr.setImage(new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/rooster.png")));
-        fxRaudurDyr.setImage(new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/cat.png")));
-        fxBlarDyr.setImage(new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/dog.png")));
-        fxGraennDyr.setImage(new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/horse.png")));
+        fxGulurDyr.setImage(hladaMynd("rooster.png"));
+        fxRaudurDyr.setImage(hladaMynd("cat.png"));
+        fxBlarDyr.setImage(hladaMynd("dog.png"));
+        fxGraennDyr.setImage(hladaMynd("horse.png"));
+
+        // Tengja litaval við hringi
+        fxGulurLitur.getSelectionModel().selectedIndexProperty().addListener(
+                (obs, o, n) -> uppfaeraCircle(fxGulurCircle, 0, n.intValue()));
+        fxRaudurLitur.getSelectionModel().selectedIndexProperty().addListener(
+                (obs, o, n) -> uppfaeraCircle(fxRaudurCircle, 1, n.intValue()));
+        fxBlarLitur.getSelectionModel().selectedIndexProperty().addListener(
+                (obs, o, n) -> uppfaeraCircle(fxBlarCircle, 3, n.intValue()));
+        fxGraennLitur.getSelectionModel().selectedIndexProperty().addListener(
+                (obs, o, n) -> uppfaeraCircle(fxGraennCircle, 2, n.intValue()));
+
+        uppfaeraCircle(fxGulurCircle, 0, 0);
+        uppfaeraCircle(fxRaudurCircle, 1, 0);
+        uppfaeraCircle(fxBlarCircle, 3, 0);
+        uppfaeraCircle(fxGraennCircle, 2, 0);
     }
 
-    @FXML
-    protected void onGulurTakki() {
-        virkir[0] = !virkir[0];
-        uppfaeraPlayer(0, fxGulurTakki, fxGulurLitur);
-    }
+    @FXML protected void onGulurTakki() { togglePlayer(0, fxGulurTakki, fxGulurLitur); }
+    @FXML protected void onRaudurTakki() { togglePlayer(1, fxRaudurTakki, fxRaudurLitur); }
+    @FXML protected void onBlarTakki() { togglePlayer(2, fxBlarTakki, fxBlarLitur); }
+    @FXML protected void onGraennTakki() { togglePlayer(3, fxGraennTakki, fxGraennLitur); }
 
-    @FXML
-    protected void onRaudurTakki() {
-        virkir[1] = !virkir[1];
-        uppfaeraPlayer(1, fxRaudurTakki, fxRaudurLitur);
-    }
-
-    @FXML
-    protected void onBlarTakki() {
-        virkir[2] = !virkir[2];
-        uppfaeraPlayer(2, fxBlarTakki, fxBlarLitur);
-    }
-
-    @FXML
-    protected void onGraennTakki() {
-        virkir[3] = !virkir[3];
-        uppfaeraPlayer(3, fxGraennTakki, fxGraennLitur);
-    }
-
-    private void uppfaeraPlayer(int index, Button takki, ChoiceBox<String> litur) {
-        if (virkir[index]) {
-            takki.setText("Í leik");
-            litur.setDisable(false);
-        } else {
-            takki.setText("Úr leik");
-            litur.setDisable(true);
-        }
+    private void togglePlayer(int index, Button takki, ChoiceBox<String> litur) {
+        virkir[index] = !virkir[index];
+        takki.setText(virkir[index] ? "Í leik" : "Úr leik");
+        litur.setDisable(!virkir[index]);
         uppfaeraHnappa();
     }
 
+    /**
+     * Gerir virkan leikmann ósmellananlegan ef aðeins 2 eru virkir,
+     * svo ekki sé hægt að fara niður í færri en 2.
+     */
     private void uppfaeraHnappa() {
-        int fjoldiVirkra = 0;
-        for (boolean v : virkir) if (v) fjoldiVirkra++;
+        int fjoldi = 0;
+        for (boolean v : virkir) if (v) fjoldi++;
 
-        // Svo það sé ekki hægt að hafa færri en 2 í leik
-        fxGulurTakki.setDisable(!virkir[0] || fjoldiVirkra <= 2 ?
-                virkir[0] ? fjoldiVirkra <= 2 : false : false);
-        fxRaudurTakki.setDisable(!virkir[1] || fjoldiVirkra <= 2 ?
-                virkir[1] ? fjoldiVirkra <= 2 : false : false);
-        fxBlarTakki.setDisable(!virkir[2] || fjoldiVirkra <= 2 ?
-                virkir[2] ? fjoldiVirkra <= 2 : false : false);
-        fxGraennTakki.setDisable(!virkir[3] || fjoldiVirkra <= 2 ?
-                virkir[3] ? fjoldiVirkra <= 2 : false : false);
+        Button[] takkar = {fxGulurTakki, fxRaudurTakki, fxBlarTakki, fxGraennTakki};
+        for (int i = 0; i < 4; i++) {
+            takkar[i].setDisable(virkir[i] && fjoldi <= 2);
+        }
     }
 
     @FXML
     protected void onHefjaLeik() {
-        Leikmadur[] leikmenn = new Leikmadur[4];
+        Leikmadur[] leikmenn = {
+                new Leikmadur(Reitur.Litur.GULUR, Leikmadur.Dyr.KJUKLING, virkir[0]),
+                new Leikmadur(Reitur.Litur.RAUDUR, Leikmadur.Dyr.KISA, virkir[1]),
+                new Leikmadur(Reitur.Litur.GRAENN, Leikmadur.Dyr.HESTUR, virkir[2]),
+                new Leikmadur(Reitur.Litur.BLAR, Leikmadur.Dyr.HUNDUR, virkir[3])
+        };
 
-        leikmenn[0] = new Leikmadur(Reitur.Litur.GULUR, Leikmadur.Dyr.KISA, virkir[0]);
-        leikmenn[1] = new Leikmadur(Reitur.Litur.RAUDUR, Leikmadur.Dyr.HUNDUR, virkir[1]);
-        leikmenn[2] = new Leikmadur(Reitur.Litur.BLAR, Leikmadur.Dyr.KJUKLING, virkir[2]);
-        leikmenn[3] = new Leikmadur(Reitur.Litur.GRAENN, Leikmadur.Dyr.HESTUR, virkir[3]);
+        int[] litaVal = {
+                fxGulurLitur.getSelectionModel().getSelectedIndex(),
+                fxRaudurLitur.getSelectionModel().getSelectedIndex(),
+                fxGraennLitur.getSelectionModel().getSelectedIndex(),
+                fxBlarLitur.getSelectionModel().getSelectedIndex()
+        };
 
-        LeikStilling stilling = new LeikStilling(leikmenn);
+        LeikStilling stilling = new LeikStilling(leikmenn, litaVal);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
@@ -127,5 +134,14 @@ public class StartController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void uppfaeraCircle(Circle circle, int playerIndex, int valIndex) {
+        circle.getStyleClass().removeAll(FILL_KLASAR[playerIndex]);
+        circle.getStyleClass().add(FILL_KLASAR[playerIndex][valIndex]);
+    }
+
+    private Image hladaMynd(String nafn) {
+        return new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/" + nafn));
     }
 }

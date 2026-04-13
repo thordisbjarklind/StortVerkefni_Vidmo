@@ -3,18 +3,11 @@ package is.vinnsla;
 public class Reitur {
 
     public enum ReiturTypa {
-        NORMAL,
-        START,
-        HOME_STRETCH,
-        GOAL,
-        HOME_BASE
+        NORMAL, START, HOME_STRETCH, GOAL, HOME_BASE
     }
 
     public enum Litur {
-        GULUR,  // top-left
-        RAUDUR, // top-right
-        BLAR,   // bottom-left
-        GRAENN  // bottom-right
+        GULUR, RAUDUR, BLAR, GRAENN
     }
 
     private final int row;
@@ -36,18 +29,7 @@ public class Reitur {
     public int getRow() { return row; }
     public int getColumn() { return column; }
     public ReiturTypa getTypa() { return typa; }
-    public Litur getListur() { return litur; }
-
-    public boolean isColorSpecific() {
-        return litur != null;
-    }
-
-    public boolean isAccessibleTo(Litur leiklitur) {
-        if (typa == ReiturTypa.HOME_STRETCH || typa == ReiturTypa.START) {
-            return this.litur == leiklitur;
-        }
-        return true;
-    }
+    public Litur getLitur() { return litur; }
 
     @Override
     public String toString() {
