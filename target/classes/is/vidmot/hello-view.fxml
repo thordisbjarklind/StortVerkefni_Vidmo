@@ -17,7 +17,7 @@ Notendaviðmót fyrir Halló heimur forritið
 Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
 -->
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1000.0" spacing="60.0" stylesheets="@CSS/ludo.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="is.vidmot.LudoController">
+<HBox fillHeight="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1024.0" spacing="60.0" stylesheets="@CSS/ludo.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="is.vidmot.LudoController">
    <children>
       <GridPane fx:id="fxBord" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="570.0">
          <columnConstraints>
@@ -64,7 +64,7 @@ Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
                </font></Label>
          </children>
       </GridPane>
-      <VBox prefHeight="769.0" prefWidth="323.0" spacing="10.0">
+      <VBox prefHeight="760.0" prefWidth="380.0" spacing="10.0">
          <children>
             <Label alignment="CENTER" prefHeight="74.0" prefWidth="336.0" text="LUDO">
                <font>
@@ -75,34 +75,46 @@ Viðmótið hefur tvo viðmótshluti, einn Label og einn Button
                <font>
                   <Font size="24.0" />
                </font></Label>
-            <Label prefHeight="43.0" prefWidth="316.0" text="1. Ýtið á teninginn til að hefja leik. ">
+            <Label prefHeight="43.0" prefWidth="360.0" text="1. Ýtið á teninginn til að hefja leik. ">
                <font>
                   <Font size="18.0" />
                </font>
                <padding>
                   <Insets left="15.0" />
-               </padding></Label>
-            <Label prefHeight="72.0" prefWidth="298.0" text="Röðin er: gulur, rauður, grænn og blár." wrapText="true">
+               </padding>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Label>
+            <Label prefHeight="72.0" prefWidth="360.0" text="Röðin er: gulur, rauður, grænn og blár." wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
                <padding>
                   <Insets left="15.0" />
-               </padding></Label>
-            <Label prefHeight="109.0" prefWidth="297.0" text="2. Smellt er á peð til að gera, þarf sexu til að losa peð." wrapText="true">
+               </padding>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Label>
+            <Label prefHeight="109.0" prefWidth="360.0" text="2. Smellt er á peð til að gera, þarf sexu til að losa peð." wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
                <padding>
                   <Insets left="15.0" />
-               </padding></Label>
-            <Label prefHeight="115.0" prefWidth="284.0" text="3. Leikurinn snýst um að ferðast hring á undan hinum og komast í miðjuna!" wrapText="true">
+               </padding>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Label>
+            <Label prefHeight="115.0" prefWidth="353.0" text="3. Leikurinn snýst um að ferðast hring á undan hinum og komast í miðjuna!" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
                <padding>
                   <Insets left="15.0" />
-               </padding></Label>
+               </padding>
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin></Label>
             <GridPane prefHeight="58.0" prefWidth="352.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
