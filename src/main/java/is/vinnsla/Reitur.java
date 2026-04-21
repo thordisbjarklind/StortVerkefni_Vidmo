@@ -1,5 +1,12 @@
 package is.vinnsla;
 
+/**
+ * @author: Logi Halldórsson, Háskóli Íslands, loh19@hi.is
+ * @author: Þórdís Bjarklind Gunnarsdóttir, Háskóli Íslands, tbg18@hi.is
+ *
+ * Lýsir einum reit á Ludo leikborðinu.
+ * Heldur utan um staðsetningu (row, column), tegund reits og lit (ef við á).
+ */
 public class Reitur {
 
     public enum ReiturTypa {
@@ -15,6 +22,14 @@ public class Reitur {
     private final ReiturTypa typa;
     private final Litur litur;
 
+    /**
+     * Býr til nýjan reit með upplýsingum.
+     *
+     * @param row röð reits á borði
+     * @param column dálkur reits á borði
+     * @param typa tegund reits (NORMAL, START, HOME_STRECH, GOAL, HOME_BASE)
+     * @param litur litur reits
+     */
     public Reitur(int row, int column, ReiturTypa typa, Litur litur) {
         this.row = row;
         this.column = column;

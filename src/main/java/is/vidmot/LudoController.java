@@ -17,6 +17,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+/******************************************************************************
+ *  Nafn    : Logi Halldórsson og Þórdís Bjarklind Gunnarsdóttir
+ *  T-póstur: tbg18@hi.is, loh19@hi.is
+ *  Lýsing  : Controller fyrir sjálfan Ludo leikinn.
+ *  Sér um leikflæði, teningakast, hreyfingu peða og uppfærslu notendaviðmóts.
+ *  Tengir saman leikjafræði (Ludo) og JavaFX viðmót í rauntíma.
+ *
+ *****************************************************************************/
 public class LudoController {
 
     @FXML private GridPane fxBord;
@@ -55,10 +63,15 @@ public class LudoController {
     private static final int[][] HOME_PED2 = {{1,1}, {1,7}, {7,7}, {7,1}};
     private static final double HOME_OFFSET = 32.5;
 
+
     @FXML
     public void initialize() {
     }
 
+    /**
+     * Stillir leikinn eftir valinni stillingu.
+     * @param stilling
+     */
     public void setStilling(LeikStilling stilling) {
         ludo = new Ludo(stilling.getLeikmenn());
         litaVal = stilling.getLitaVal();
@@ -75,7 +88,6 @@ public class LudoController {
         });
     }
 
-    // ---- Teningur ----
 
     private void tengjaTening() {
         uppfaeraTeningamynd(ludo.getTeningur().getTala());
@@ -83,13 +95,19 @@ public class LudoController {
                 uppfaeraTeningamynd(n.intValue()));
     }
 
+    /**
+     * Uppfaera mynd á tening miðað við tölu
+     * @param tala talan sem kemur þegar teningi er kastað (1-6)
+     */
     private void uppfaeraTeningamynd(int tala) {
         fxKasta.getStyleClass().removeAll(teningaMyndir);
         fxKasta.getStyleClass().add(teningaMyndir[tala - 1]);
     }
 
-    // ---- Home myndir ----
 
+    /**
+     * Setur réttar myndir á home reitina fyrir hvern leikmann og gerir þær ósmellanlegar.
+     */
     private void stillaHomeImages() {
         ImageView[] homes = {fxGulurHome, fxRaudurHome, fxGraennHome, fxBlarHome};
         for (int i = 0; i < 4; i++) {
@@ -98,7 +116,6 @@ public class LudoController {
         }
     }
 
-    // ---- Borð ----
 
     private void byggjaBord() {
         ImageView[] homes = {fxGulurHome, fxRaudurHome, fxBlarHome, fxGraennHome};
@@ -120,6 +137,10 @@ public class LudoController {
         setjaPed();
     }
 
+    /**
+     * Litar reiti á borðinu út frá leið leikmanns
+     * Start og home reitir fá lit leikmanns, en mark reitir fá "goal" stillingu.
+     */
     private void litaBordid() {
         for (int i = 0; i < 4; i++) {
             for (Reitur r : ludo.getLeid(i)) {
@@ -137,8 +158,9 @@ public class LudoController {
         }
     }
 
-    // ---- Peð ----
-
+    /**
+     * Býr til og setur peðinn hjá leikmönnum á réttan upphafsreit
+     */
     private void setjaPed() {
         for (int i = 0; i < 4; i++) {
             if (!ludo.getLeikmadur(i).isVirkur()) continue;
@@ -149,6 +171,14 @@ public class LudoController {
         }
     }
 
+    /**
+     * Býr til peð fyrir tiltekinn leikmann og tengir það við leikjafræði.
+     * Peðið fær rétt útlit, bregst við smellum og uppfærist sjálfkrafa þegar staða þess breytist.
+     *
+     * @param leikmannIndex index leikmanns
+     * @param pedNumer númer peðs sem eru 1 eða 2
+     * @return sp (StackPane) sem táknar peðið á borðinu.
+     */
     private StackPane buaPed(int leikmannIndex, int pedNumer) {
         Circle circle = new Circle(30);
         circle.getStyleClass().add(FILL_KLASAR[leikmannIndex][litaVal[leikmannIndex]]);
@@ -171,6 +201,14 @@ public class LudoController {
         return sp;
     }
 
+    /**
+     * Uppfærir stöðu peðs í viðmóti út frá leikstöðu.
+     * Setur peð á home, færir það á borði eða fjarlægir það ef það er komið í mark.
+     *
+     * @param leikmannIndex
+     * @param pedNumer
+     * @param ped
+     */
     private void flytjaPed(int leikmannIndex, int pedNumer, StackPane ped) {
         Leikmadur lm = ludo.getLeikmadur(leikmannIndex);
         boolean leyst = (pedNumer == 1) ? lm.isPed1Leyst() : lm.isPed2Leyst();
@@ -191,6 +229,17 @@ public class LudoController {
         setjaPedVidmot(ped, reitur.getRow(), reitur.getColumn(), false);
     }
 
+    /**
+     * Uppfærir staðsetningu peðs í leikborðinu.
+     * Peðið er fært á gefna reitastöðu og fær annaðhvort
+     * home offset eða venjulega staðsetningu eftir því
+     * hvort það er í home stöðu.
+     *
+     * @param ped
+     * @param row
+     * @param col
+     * @param heima
+     */
     private void setjaPedVidmot(StackPane ped, int row, int col, boolean heima) {
         fxBord.getChildren().remove(ped);
         GridPane.setRowIndex(ped, row);
@@ -207,8 +256,14 @@ public class LudoController {
         fxBord.getChildren().add(ped);
     }
 
-    // ---- Aðgerðir ----
-
+    /**
+     * Passar þegar smellt er á peð leikmanns.
+     * Athugar hvort það sé leyfilegt að velja peð, framkvæmir hreyfingu
+     * og uppfærir stöðu leiksins (sigur eða næsta leik).
+     *
+     * @param leikmannIndex
+     * @param pedNumer
+     */
     private void onPedSmellt(int leikmannIndex, int pedNumer) {
         if (!ludo.isBidurEftirPedVali()) return;
         if (ludo.getLeikmadur(leikmannIndex) != ludo.naestiLeikmadurProperty().get()) return;
@@ -225,6 +280,11 @@ public class LudoController {
         }
     }
 
+    /**
+     * Passar kast á teningi og uppfærir stöðu leiksins.
+     * Ef það erhægt er að færa peð er beðið um að velja peð,
+     * annars er skipt yfir á næsta leikmann.
+     */
     @FXML
     protected void onLeikaLeik() {
         if (ludo.isBidurEftirPedVali()) return;
@@ -240,6 +300,10 @@ public class LudoController {
         }
     }
 
+    /**
+     * Hleður upphafsviðmóti þegar ýtt er á Nýr leikur hnappinn.
+     * @param event atburður sem virkjar aðgerðinna
+     */
     @FXML
     protected void onNyrLeikur(ActionEvent event) {
         try {
@@ -252,12 +316,20 @@ public class LudoController {
         }
     }
 
-    // ---- Hjálparaðferðir ----
-
+    /**
+     * Uppfærir skilaboð í viðmóti til að segja
+     * hvaða leikmaður á að gera næst.
+     */
     private void uppfaeraSkilabod() {
         fxSkilabod.setText(ludo.naestiLeikmadurProperty().get().toString() + " á að gera");
     }
 
+    /**
+     * Hleður mynd úr resources möppu miðað við skráarnafn.
+     *
+     * @param nafn nafn á myndaskrá
+     * @return Image hlutur sem var hlaðinn úr resources
+     */
     private Image hladaMynd(String nafn) {
         return new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/" + nafn));
     }

@@ -13,6 +13,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+/******************************************************************************
+ *  Nafn    : Logi Halldórsson og Þórdís Bjarklind Gunnarsdóttir
+ *  T-póstur: tbg18@hi.is, loh19@hi.is
+ *  Lýsing  : Controller fyrir upphafsskjá Ludo leiksins.
+ *  Sér um val leikmanna, liti og útlit áður en leikur hefst.
+ *  Býr til LeikStilling og skiptir yfir í aðalleik (LudoController).
+ *
+ *****************************************************************************/
 public class StartController {
 
     @FXML private Circle fxGulurCircle;
@@ -46,6 +54,11 @@ public class StartController {
             {"fillBlue", "fillPurple", "fillPastelBlue", "fillLilac"}
     };
 
+    /**
+     * Frumstillir notendaviðmótið.
+     * Setur upp valmöguleika, sjálfgefin gildi, myndir og tengir listeners.
+     * Kallað á það sjálfkrafa þegar FXML er hlaðið.
+     */
     @FXML
     public void initialize() {
         fxGulurLitur.getItems().addAll("Gulur", "Pastell gulur", "Appelsínugulur", "Pastell appelsínugulur");
@@ -84,6 +97,13 @@ public class StartController {
     @FXML protected void onBlarTakki() { togglePlayer(2, fxBlarTakki, fxBlarLitur); }
     @FXML protected void onGraennTakki() { togglePlayer(3, fxGraennTakki, fxGraennLitur); }
 
+    /**
+     * Skipar leikmanni inn eða úr leik og uppfærir UI í kjölfarið.
+     *
+     * @param index index leikmanss
+     * @param takki hnappur sem táknar leikmann
+     * @param litur choicebox fyrir lit leikmanns
+     */
     private void togglePlayer(int index, Button takki, ChoiceBox<String> litur) {
         virkir[index] = !virkir[index];
         takki.setText(virkir[index] ? "Í leik" : "Úr leik");
@@ -105,6 +125,11 @@ public class StartController {
         }
     }
 
+    /**
+     * Býr til leikstillingu út frá vali notanda.
+     * Skiptir yfir í aðalleik.
+     * Sendir leikmenn, liti og stillingar til LudoController.
+     */
     @FXML
     protected void onHefjaLeik() {
         Leikmadur[] leikmenn = {
@@ -136,11 +161,25 @@ public class StartController {
         }
     }
 
+    /**
+     * Fjarlægir fyrri lit og setur nýjan.
+     * Uppfærir lit á hring í UI út frá vali leikmanns.
+     *
+     * @param circle hringur sem á að uppfæra
+     * @param playerIndex index leikmanns
+     * @param valIndex valinn litur fyrir leikmann
+     */
     private void uppfaeraCircle(Circle circle, int playerIndex, int valIndex) {
         circle.getStyleClass().removeAll(FILL_KLASAR[playerIndex]);
         circle.getStyleClass().add(FILL_KLASAR[playerIndex][valIndex]);
     }
 
+    /**
+     * Hleður mynd úr resources möppu.
+     *
+     * @param nafn nafn á myndaskrá
+     * @return Image hlutur sem var hlaðin
+     */
     private Image hladaMynd(String nafn) {
         return new Image(getClass().getResourceAsStream("/is/vidmot/CSS/myndir/" + nafn));
     }
