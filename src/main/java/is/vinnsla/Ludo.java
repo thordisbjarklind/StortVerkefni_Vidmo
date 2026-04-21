@@ -3,6 +3,14 @@ package is.vinnsla;
 import javafx.beans.property.SimpleObjectProperty;
 import java.util.ArrayList;
 
+/**
+ * @author: Logi Halldórsson, Háskóli Íslands, loh19@hi.is
+ * @author: Þórdís Bjarklind Gunnarsdóttir, Háskóli Íslands, tbg18@hi.is
+ *
+ * Stýrir leikflæði Ludo leiksins.
+ * Heldur utan um leikmenn, tening, leikborð og reglur.
+ * Sér um að færa peð, athuga árekstra og ákvarða sigurvegara.
+ */
 public class Ludo {
 
     public enum LeikStada {
@@ -17,6 +25,13 @@ public class Ludo {
     private int gerir = 0;
     private boolean bidurEftirPedVali = false;
 
+    /**
+     * Smiður:
+     * Býr til nýjan Ludo leik með gefnum leikmönnum.
+     * Setur upp leikborð og velur fyrsta virka leikmann.
+     *
+     * @param leikmenn fylki af leikmönnum sem taka þátt í leiknum
+     */
     public Ludo(Leikmadur[] leikmenn) {
         this.leikmenn = leikmenn;
         smidaLeidir();

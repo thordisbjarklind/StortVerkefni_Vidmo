@@ -5,6 +5,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.BooleanProperty;
 
+/**
+ * @author: Logi Halldórsson, Háskóli Íslands, loh19@hi.is
+ * @author: Þórdís Bjarklind Gunnarsdóttir, Háskóli Íslands, tbg18@hi.is
+ *
+ * Lýsir leikmanni í Ludo leiknum.
+ * Heldur utan um lit, dýr og stöðu tveggja peða.
+ * Sér um leikjareglur tengdar hreyfingu peða og sigurs.
+ */
 public class Leikmadur {
 
     public enum Dyr {
@@ -27,6 +35,13 @@ public class Leikmadur {
     private final BooleanProperty ped1Leyst = new SimpleBooleanProperty(false);
     private final BooleanProperty ped2Leyst = new SimpleBooleanProperty(false);
 
+    /**
+     * Smiður: Býr til nýjan leikmann með ákveðnum lit, dýri og virkni.
+     *
+     * @param litur litur leikmanns á borði
+     * @param dyr karakter leikmanns á borði
+     * @param virkur hvort leikmaður sé virkur í leik
+     */
     public Leikmadur(Reitur.Litur litur, Dyr dyr, boolean virkur) {
         this.litur = litur;
         this.dyr = dyr;
@@ -37,6 +52,10 @@ public class Leikmadur {
      * Færir peð eftir gildi á tening.
      * Ef peð er ekki á leiðinni og teningurinn er 6, setja peð á reit 0.
      * Skilar true ef peðið er komið í mark (reitur 34).
+     *
+     * @param pedNumer númer peðs
+     * @param kast talan sem er kemur eftir kast
+     * @return false ef peð er ekki á leið, annars true
      */
     public boolean faera(int pedNumer, int kast) {
         IntegerProperty stada = getStada(pedNumer);
@@ -68,10 +87,21 @@ public class Leikmadur {
         return getStada(pedNumer).get() < 34;
     }
 
+    /**
+     * Athugar hvort leikmaður hafi unnið leikinn.
+     * Leikmaður vinnur þegar bæði peð eru komin í mark.
+     *
+     * @return true ef leikmaður hefur sigrað, annars false
+     */
     public boolean hefurSigrad() {
         return ped1Stada.get() == 34 && ped2Stada.get() == 34;
     }
 
+    /**
+     * Sendir peð aftur á byrjunarreit og endurstillir stöðu þess.
+     *
+     * @param pedNumer númer peðs sem er 1 eða 2
+     */
     public void sendaHeim(int pedNumer) {
         getStada(pedNumer).set(0);
         getLeyst(pedNumer).set(false);
